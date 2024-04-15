@@ -1,15 +1,23 @@
-﻿namespace Data {
+﻿using System.Numerics;
+
+namespace Data {
     public abstract class DataAbstractApi {
-        public static DataAbstractApi CreateBall(double x, double y) {
-            return new Ball(x, y);
+        public abstract void AddBall(Ball b);
+        public abstract void RemoveBall();
+        public abstract Ball GetBall(int i);
+        public abstract int GetBallsCount();
+
+        public static Ball CreateNewBall(Vector2 p, double r, Vector2 s) {
+            return new Ball(p, r, s);
         }
 
-        public abstract double getXPosition();
+        public static Table CreateNewTable(double w, double h) {
+            return new Table(w, h);
+        }
 
-        public abstract double getYPosition();
+        public static DataAbstractApi CreateBallCollection() {
+            return new BallsCollection();
+        }
 
-        public abstract void setXPosition(double x);
-
-        public abstract void setYPosition(double y);
     }
 }

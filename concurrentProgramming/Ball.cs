@@ -1,29 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Numerics;
+
 namespace Data {
-    internal class Ball : DataAbstractApi {
-        private double positionX;
-        private double positionY;
+    public class Ball {
+        public Vector2 position { get; set; }
+        public double radius { get; set; }
+        public Vector2 speed { get; set; }
 
-        public Ball(double x, double y) {
-            positionX = x;
-            positionY = y;
-        }
-
-        public override double getXPosition() {
-            return positionX;
-        }
-
-        public override double getYPosition() {
-            return positionY;
-        }
-
-        public override void setXPosition(double newX) {
-            positionX = newX;
-        }
-
-        public override void setYPosition(double newY) {
-            positionY = newY;
+        public Ball(Vector2 p, double r, Vector2 v) {
+            position = p;
+            radius = r;
+            speed = v;
         }
     }
 }
