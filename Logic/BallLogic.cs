@@ -31,7 +31,8 @@ namespace Logic {
                 double speedX = (random.NextDouble() * 10);
                 double speedY = (random.NextDouble() * 10);
 
-                this.Balls.AddBall(new Ball(new Vector2((float)x, (float)y), radius, new Vector2((float)speedX, (float)speedY)));
+                IBall ball = IBall.CreateInstance(new Vector2((float)x, (float)y), radius, new Vector2((float)speedX, (float)speedY));
+                this.Balls.AddBall(ball);
             }
 
         }
@@ -46,7 +47,7 @@ namespace Logic {
             return Balls.GetBallsCount();
         }
 
-        public override Ball getBall(int index) {
+        public override IBall getBall(int index) {
             return Balls.GetBall(index);
         }
 

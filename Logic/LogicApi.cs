@@ -8,7 +8,7 @@ namespace Logic {
 
         public abstract void removeBalls(int quantity);
 
-        public abstract Ball getBall(int index);
+        public abstract IBall getBall(int index);
 
         public abstract void start();
 

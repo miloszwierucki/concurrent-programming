@@ -28,7 +28,7 @@ namespace ModelApi {
             ballsQuantity = 0;
 
             logicLayer.PositionChangedEvent += (sender, b) => {
-                BallPositionChange?.Invoke(this, new OnPositionChangeUiAdapterEventArgs(b.GetBall().position, b.id));
+                BallPositionChange?.Invoke(this, new OnPositionChangeUiAdapterEventArgs(b.GetPosition(), b.id));
             };
         }
 
@@ -50,7 +50,7 @@ namespace ModelApi {
 
             logicLayer = new BallsLogic(tableWidth, tableHeight);
             logicLayer.PositionChangedEvent += (sender, b) => {
-                BallPositionChange?.Invoke(this, new OnPositionChangeUiAdapterEventArgs(b.GetBall().position, b.id));
+                BallPositionChange?.Invoke(this, new OnPositionChangeUiAdapterEventArgs(b.GetPosition(), b.id));
             };
         }
 

@@ -7,11 +7,11 @@ namespace DataApiTest {
     public class DataAPITest {
         private BallsCollection collection;
         private Table testTable;
-        private Ball testBall1, testBall2, testBall3;
+        private IBall testBall1, testBall2, testBall3;
 
         [TestMethod]
         public void BallTest() { 
-            testBall1 = new Ball(new Vector2(1, 2), 1, new Vector2(0, 0));
+            testBall1 = IBall.CreateInstance(new Vector2(1, 2), 1, new Vector2(0, 0));
 
             Assert.IsNotNull(testBall1);
 
@@ -43,9 +43,9 @@ namespace DataApiTest {
         public void BallsCollectionTest()
         {
             collection = new BallsCollection();
-            testBall1 = new Ball(new Vector2(5, 7), 2, new Vector2(0, 0));
-            testBall2 = new Ball(new Vector2(3, 73), 2, new Vector2(0, 0));
-            testBall3 = new Ball(new Vector2(5, 55), 2, new Vector2(0, 0));
+            testBall1 = IBall.CreateInstance(new Vector2(5, 7), 2, new Vector2(0, 0));
+            testBall2 = IBall.CreateInstance(new Vector2(3, 73), 2, new Vector2(0, 0));
+            testBall3 = IBall.CreateInstance(new Vector2(5, 55), 2, new Vector2(0, 0));
 
 
             Assert.AreEqual(collection.GetBallsCount(), 0);

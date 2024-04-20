@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Logic {
     public class MovableBall {
-        private Ball ball;
+        private IBall ball;
         public int id;
 
         private BallsLogic owner;
@@ -12,7 +12,7 @@ namespace Logic {
         public double targetX;
         public double targetY;
 
-        public MovableBall(Ball ball, int id, BallsLogic owner, double targetX, double targetY) {
+        public MovableBall(IBall ball, int id, BallsLogic owner, double targetX, double targetY) {
             this.ball = ball;
             this.id = id;
             this.owner = owner;
@@ -20,8 +20,12 @@ namespace Logic {
             this.targetY = targetY;
         }
 
-        public Ball GetBall() {
+        public IBall GetBall() {
             return ball;
+        }
+
+        public Vector2 GetPosition() {
+            return new Vector2(ball.position.X, ball.position.Y);
         }
 
         public async void Move() {

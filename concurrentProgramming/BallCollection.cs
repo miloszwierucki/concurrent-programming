@@ -1,16 +1,16 @@
 ﻿namespace Data {
     public class BallsCollection : DataAbstractApi {
-        private List<Ball> balls;
+        private List<IBall> balls;
 
         public BallsCollection() {
-            balls = new List<Ball>();
+            balls = new List<IBall>();
         }
 
         public override int GetBallsCount() {
             return balls.Count;
         }
 
-        public override void AddBall(Ball ball) {
+        public override void AddBall(IBall ball) {
             balls.Add(ball);
         }
 
@@ -18,7 +18,7 @@
             balls.Remove(balls[balls.Count - 1]);
         }
 
-        public override Ball GetBall(int index) {
+        public override IBall GetBall(int index) {
             return balls[index];
         }
     }
