@@ -3,15 +3,15 @@ using System.Numerics;
 
 namespace Logic {
     public class BallsLogic : LogicAbstractApi {
-        public BallsCollection Balls { get; set; }
-        public Table Table { get; set; }
+        public DataAbstractApi Balls { get; set; }
+        public ITable Table { get; set; }
 
         public CancellationTokenSource CancelSimulationSource { get; private set; }
 
 
         public BallsLogic(double w, double h) {
-            Table = new Table(w, h);
-            Balls = new BallsCollection();
+            Table = ITable.CreateInstance(w, h);
+            Balls = DataAbstractApi.CreateBallCollection();
 
             CancelSimulationSource = new CancellationTokenSource();
         }

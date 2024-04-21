@@ -5,8 +5,8 @@ namespace DataApiTest {
 
     [TestClass]
     public class DataAPITest {
-        private BallsCollection collection;
-        private Table testTable;
+        private DataAbstractApi collection;
+        private ITable testTable;
         private IBall testBall1, testBall2, testBall3;
 
         [TestMethod]
@@ -32,7 +32,7 @@ namespace DataApiTest {
         [TestMethod]
         public void TableTest()
         {
-            testTable = new Table(10, 10);
+            testTable = ITable.CreateInstance(10, 10);
             Assert.IsNotNull(testTable);
 
             Assert.AreEqual(testTable.height, 10);
@@ -42,7 +42,7 @@ namespace DataApiTest {
         [TestMethod]
         public void BallsCollectionTest()
         {
-            collection = new BallsCollection();
+            collection = DataAbstractApi.CreateBallCollection();
             testBall1 = IBall.CreateInstance(new Vector2(5, 7), 2, new Vector2(0, 0));
             testBall2 = IBall.CreateInstance(new Vector2(3, 73), 2, new Vector2(0, 0));
             testBall3 = IBall.CreateInstance(new Vector2(5, 55), 2, new Vector2(0, 0));

@@ -11,7 +11,7 @@ namespace Data {
             return new Ball(p, r, s);
         }
 
-        public static Table CreateNewTable(double w, double h) {
+        public static ITable CreateNewTable(double w, double h) {
             return new Table(w, h);
         }
 

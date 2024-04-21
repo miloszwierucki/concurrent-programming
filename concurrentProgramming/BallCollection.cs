@@ -1,5 +1,5 @@
 ﻿namespace Data {
-    public class BallsCollection : DataAbstractApi {
+    internal class BallsCollection : DataAbstractApi {
         private List<IBall> balls;
 
         public BallsCollection() {
