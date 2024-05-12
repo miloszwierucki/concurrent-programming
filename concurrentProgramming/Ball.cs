@@ -4,11 +4,11 @@ using System.Numerics;
 
 namespace Data {
     public abstract class IBall {
-        public abstract int ballID { get; }
-        public abstract Vector2 position { get; set; }
-        public abstract double radius { get; set; }
-        public abstract double weight { get; set; }
-        public abstract Vector2 speed { get; set; }
+        public abstract int BallID { get; }
+        public abstract Vector2 Position { get; set; }
+        public abstract double Radius { get; set; }
+        public abstract double Weight { get; set; }
+        public abstract Vector2 Speed { get; set; }
 
         public static IBall CreateInstance(int id, Vector2 p, double r, Vector2 v, double w)
         {
@@ -16,20 +16,12 @@ namespace Data {
         }
     }
 
-    internal class Ball: IBall {
-        public override int ballID { get; }
-        public override Vector2 position { get; set; }
-        public override double radius { get; set; }
-        public override double weight { get; set; }
+    internal class Ball(int id, Vector2 p, double r, Vector2 v, double weight) : IBall {
+        public override int BallID { get; } = id;
+        public override Vector2 Position { get; set; } = p;
+        public override double Radius { get; set; } = r;
+        public override double Weight { get; set; } = weight;
 
-        public override Vector2 speed { get; set; }
-
-        public Ball(int id, Vector2 p, double r, Vector2 v, double weight) {
-            ballID = id;
-            this.position = p;
-            this.radius = r;
-            this.speed = v;
-            this.weight = weight;
-        }
+        public override Vector2 Speed { get; set; } = v;
     }
 }

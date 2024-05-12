@@ -68,7 +68,7 @@
                 
                     Grid.Column="3" 
                     Background="#5C6B73" 
-                    Width="100" FontFamily="Source Sans Pro" HorizontalAlignment="Center" Height="40" BorderBrush="{x:Null}" Foreground="#FFE0FBFC" Click="Button_Click_1"/>
+                    Width="100" FontFamily="Source Sans Pro" HorizontalAlignment="Center" Height="40" BorderBrush="{x:Null}" Foreground="#FFE0FBFC" />
 
                 <Button Content="Clear table" 
                     Command="{Binding StopButton}"

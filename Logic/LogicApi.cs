@@ -4,18 +4,18 @@ namespace Logic {
     public abstract class LogicAbstractApi {
         public event EventHandler<MovableBall>? PositionChangedEvent;
 
-        public abstract void addBalls(int quantity);
+        public abstract void AddBalls(int quantity);
 
-        public abstract void removeBalls(int quantity);
+        public abstract void RemoveBalls(int quantity);
 
-        public abstract IBall getBall(int index);
+        public abstract IBall GetBall(int index);
 
-        public abstract void start();
+        public abstract void Start();
 
-        public abstract void stop();
-        public abstract int getBallsCount();
+        public abstract void Stop();
+        public abstract int GetBallsCount();
 
-        protected virtual void onPositionChange(MovableBall ball) {
+        protected virtual void OnPositionChange(MovableBall ball) {
             PositionChangedEvent?.Invoke(this, ball);
         }
 

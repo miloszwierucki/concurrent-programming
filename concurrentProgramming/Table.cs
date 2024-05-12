@@ -2,19 +2,19 @@
 
 namespace Data {
     public abstract class ITable {
-        public abstract double width { get; }
-        public abstract double height { get; }
+        public abstract double Width { get; }
+        public abstract double Height { get; }
         public static ITable CreateInstance(double w, double h) {
             return new Table(w, h);
         }
     }
     internal class Table: ITable {
-        public override double width { get; }
-        public override double height { get; }
+        public override double Width { get; }
+        public override double Height { get; }
 
         public Table(double w, double h) {
-            width = w;
-            height = h;
+            Width = w;
+            Height = h;
         }
     }
 }

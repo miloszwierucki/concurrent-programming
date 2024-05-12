@@ -32,21 +32,21 @@ namespace ModelApi {
             };
         }
 
-        public void setBallCount(int quantity) {
+        public void SetBallCount(int quantity) {
             ballsQuantity = quantity;
         }
 
-        public int getBallsCount() {
+        public int GetBallsCount() {
             return ballsQuantity;
         }
 
-        public void start() {
-            logicLayer.addBalls(ballsQuantity);
-            logicLayer.start();
+        public void Start() {
+            logicLayer.AddBalls(ballsQuantity);
+            logicLayer.Start();
         }
 
-        public void stop() {
-            logicLayer.stop();
+        public void Stop() {
+            logicLayer.Stop();
 
             logicLayer = new BallsLogic(tableWidth, tableHeight);
             logicLayer.PositionChangedEvent += (sender, b) => {

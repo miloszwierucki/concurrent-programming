@@ -1,5 +1,6 @@
 using Data;
 using System.Numerics;
+using Moq;
 
 namespace DataApiTest {
 
@@ -11,21 +12,25 @@ namespace DataApiTest {
 
         [TestMethod]
         public void BallTest() { 
-            testBall1 = IBall.CreateInstance(new Vector2(1, 2), 1, new Vector2(0, 0));
+            testBall1 = IBall.CreateInstance(1, new Vector2(1, 2), 1, new Vector2(0, 0), 40);
 
             Assert.IsNotNull(testBall1);
 
-            Assert.AreEqual(testBall1.position, new Vector2(1, 2));
-            Assert.AreEqual(testBall1.radius, 1);
-            Assert.AreEqual(testBall1.speed, new Vector2(0, 0));
+            Assert.AreEqual(testBall1.Position, new Vector2(1, 2));
+            Assert.AreEqual(testBall1.Radius, 1);
+            Assert.AreEqual(testBall1.Speed, new Vector2(0, 0));
+            Assert.AreEqual(testBall1.Weight, 40);
 
-            testBall1.position = new Vector2(10, 4);
-            testBall1.radius = 10;
-            testBall1.speed = new Vector2(2, 4);
 
-            Assert.AreEqual(testBall1.position, new Vector2(10, 4));
-            Assert.AreEqual(testBall1.radius, 10);
-            Assert.AreEqual(testBall1.speed, new Vector2(2, 4));
+            testBall1.Position = new Vector2(10, 4);
+            testBall1.Radius = 10;
+            testBall1.Speed = new Vector2(2, 4);
+            testBall1.Weight = 20;
+
+            Assert.AreEqual(testBall1.Position, new Vector2(10, 4));
+            Assert.AreEqual(testBall1.Radius, 10);
+            Assert.AreEqual(testBall1.Speed, new Vector2(2, 4));
+            Assert.AreEqual(testBall1.Weight, 20);
         }
 
 
@@ -35,17 +40,17 @@ namespace DataApiTest {
             testTable = ITable.CreateInstance(10, 10);
             Assert.IsNotNull(testTable);
 
-            Assert.AreEqual(testTable.height, 10);
-            Assert.AreEqual(testTable.width, 10);
+            Assert.AreEqual(testTable.Height, 10);
+            Assert.AreEqual(testTable.Width, 10);
         }
 
         [TestMethod]
         public void BallsCollectionTest()
         {
             collection = DataAbstractApi.CreateBallCollection();
-            testBall1 = IBall.CreateInstance(new Vector2(5, 7), 2, new Vector2(0, 0));
-            testBall2 = IBall.CreateInstance(new Vector2(3, 73), 2, new Vector2(0, 0));
-            testBall3 = IBall.CreateInstance(new Vector2(5, 55), 2, new Vector2(0, 0));
+            testBall1 = IBall.CreateInstance(1, new Vector2(5, 7), 2, new Vector2(0, 0), 40);
+            testBall2 = IBall.CreateInstance(2, new Vector2(3, 73), 2, new Vector2(0, 0), 40);
+            testBall3 = IBall.CreateInstance(3, new Vector2(5, 55), 2, new Vector2(0, 0), 40);
 
 
             Assert.AreEqual(collection.GetBallsCount(), 0);

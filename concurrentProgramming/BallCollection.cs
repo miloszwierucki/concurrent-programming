@@ -1,7 +1,6 @@
 ﻿namespace Data {
     internal class BallsCollection : DataAbstractApi {
-        private List<IBall> balls;
-        public readonly object BallsLock = new object();
+        private readonly List<IBall> balls;
 
         public BallsCollection() {
             balls = new List<IBall>();
@@ -26,9 +25,6 @@
 
         public override IBall GetBall(int index) {
             return balls[index];
-        }
-        public override object GetBallsLock() {
-            return BallsLock;
         }
     }
 }

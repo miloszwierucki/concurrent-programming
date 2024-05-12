@@ -16,11 +16,11 @@ namespace Logic {
             CancelSimulationSource = new CancellationTokenSource();
         }
 
-        protected override void onPositionChange(MovableBall args) {
-            base.onPositionChange(args);
+        protected override void OnPositionChange(MovableBall args) {
+            base.OnPositionChange(args);
         }
 
-        public override void addBalls(int quantity) {
+        public override void AddBalls(int quantity) {
             Random random = new Random();
             int count = Balls.GetBallsCount();
 
@@ -32,16 +32,14 @@ namespace Logic {
                     int radius = 40;
                     double weight = radius;
 
-                    double x = (random.NextDouble() * (Table.width - radius));
-                    double y = (random.NextDouble() * (Table.height - radius));
+                    double x = (random.NextDouble() * (Table.Width - radius));
+                    double y = (random.NextDouble() * (Table.Height - radius));
 
                     Vector2 speed = new Vector2(0, 0);
-                    while (speed.X == 0)
-                    {
+                    while (speed.X == 0) {
                         speed.X = (float)(random.Next(-5, 5) + random.NextDouble());
                     }
-                    while (speed.Y == 0)
-                    {
+                    while (speed.Y == 0) {
                         speed.Y = (float)(random.Next(-5, 5) + random.NextDouble());
                     }
 
@@ -52,8 +50,8 @@ namespace Logic {
 
                     for (int j = 0; j < i; j++) {
                         // Sprawdza kolizję między piłkami
-                        if (Balls.GetBall(i).position.X <= Balls.GetBall(j).position.X + Balls.GetBall(j).radius && Balls.GetBall(i).position.X + Balls.GetBall(i).radius >= Balls.GetBall(j).position.X) {
-                            if (Balls.GetBall(i).position.Y <= Balls.GetBall(j).position.Y + Balls.GetBall(j).radius && Balls.GetBall(i).position.Y + Balls.GetBall(i).radius >= Balls.GetBall(j).position.Y) {
+                        if (Balls.GetBall(i).Position.X <= Balls.GetBall(j).Position.X + Balls.GetBall(j).Radius && Balls.GetBall(i).Position.X + Balls.GetBall(i).Radius >= Balls.GetBall(j).Position.X) {
+                            if (Balls.GetBall(i).Position.Y <= Balls.GetBall(j).Position.Y + Balls.GetBall(j).Radius && Balls.GetBall(i).Position.Y + Balls.GetBall(i).Radius >= Balls.GetBall(j).Position.Y) {
                                 // Jeśli występuje kolizja, usuwa nowo utworzoną piłkę
                                 licz = true;
                                 Balls.RemoveBall(Balls.GetBall(i));
@@ -61,8 +59,7 @@ namespace Logic {
                             }
                         }
                     }
-                    if (!licz)
-                    {
+                    if (!licz) {
                         contain = false;
                     }
                 }
@@ -70,7 +67,7 @@ namespace Logic {
 
         }
 
-        public override void removeBalls(int quantity) {
+        public override void RemoveBalls(int quantity) {
             int count = Balls.GetBallsCount();
 
             for (int i = 0; i < quantity; i++) {
@@ -80,30 +77,29 @@ namespace Logic {
             }
         }
 
-        public override int getBallsCount() {
+        public override int GetBallsCount() {
             return Balls.GetBallsCount();
         }
 
-        public override IBall getBall(int index) {
+        public override IBall GetBall(int index) {
             return Balls.GetBall(index);
         }
 
-
-        public override void start() {
+        public override void Start() {
             if (CancelSimulationSource.IsCancellationRequested) return;
 
             CancelSimulationSource = new CancellationTokenSource();
 
             for (var i = 0; i < Balls.GetBallsCount(); i++) {
-                var ball = new MovableBall(Balls.GetBall(i), i, this, Table.width, Table.height, Balls);
+                var ball = new MovableBall(Balls.GetBall(i), i, this, Table.Width, Table.Height, Balls);
 
-                ball.PositionChange += (_, args) => onPositionChange(ball);
+                ball.PositionChange += (_, args) => OnPositionChange(ball);
                 Task.Factory.StartNew(ball.Move, CancelSimulationSource.Token);
             }
 
         }
 
-        public override void stop() {
+        public override void Stop() {
             this.CancelSimulationSource.Cancel();
         }
 

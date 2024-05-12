@@ -83,12 +83,12 @@ namespace ViewModelApi {
 
         public int BallsCount {
             get { 
-                return model.getBallsCount(); 
+                return model.GetBallsCount(); 
             }
 
             set {
                 if (value >= 0) {
-                    model.setBallCount(value);
+                    model.SetBallCount(value);
                     OnPropertyChanged();
                 }
             }
@@ -113,7 +113,7 @@ namespace ViewModelApi {
             });
 
             StartButton = new Commands(() => {
-                model.setBallCount(BallsCount);
+                model.SetBallCount(BallsCount);
 
                 for (int i = 0; i < BallsCount; i++) {
                     Circles.Add(new BallProps());
@@ -123,14 +123,14 @@ namespace ViewModelApi {
                     if (Circles.Count > 0)
                         Circles[argv.id].ChangePosition(argv.position);
                 };
-                model.start();
+                model.Start();
             });
 
             StopButton = new Commands(() => {
-                model.stop();
+                model.Stop();
                 Circles.Clear();
 
-                model.setBallCount(BallsCount);
+                model.SetBallCount(BallsCount);
 
             });
         }
