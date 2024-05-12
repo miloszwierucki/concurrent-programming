@@ -102,7 +102,7 @@ namespace ViewModelApi {
         public ViewModel() {
             Circles = new AsyncObservableCollection<BallProps>();
             model = new Model();
-            BallsCount = 1;
+            BallsCount = 0;
 
             AddBallButton = new Commands(() => {
                 BallsCount += 1;
