@@ -8,7 +8,7 @@ namespace Data {
         public abstract int GetBallsCount();
 
         public static IBall CreateNewBall(int id, Vector2 p, double r, Vector2 s, double w) {
-            return new Ball(id, p, r, s, w);
+            return new Ball(id, p, r, s, w, true);
         }
 
         public static ITable CreateNewTable(double w, double h) {

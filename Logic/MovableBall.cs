@@ -80,9 +80,7 @@ namespace Logic
                     ball.Speed *= new Vector2(1, -1);
                 }
 
-                ball.Position += ball.Speed;
                 PositionChange?.Invoke(this, this);
-                await Task.Delay(20, owner.CancelSimulationSource.Token).ContinueWith(_ => { });
             }
         }
     }
