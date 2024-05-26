@@ -5,8 +5,8 @@ namespace Data {
         public abstract double GetTableWidth();
         public abstract double GetTableHeight();
         public abstract double GetBallRadius();
-        public abstract double getBallMaxSpeed();
-        public abstract double getBallWeight();
+        public abstract double GetBallMaxSpeed();
+        public abstract double GetBallWeight();
 
         public static IBall CreateNewBall(Vector2 p, double r, Vector2 s, double w) {
             return new Ball(p, r, s, w, true);
@@ -32,11 +32,11 @@ namespace Data {
             return ballRadius;
         }
 
-        public override double getBallMaxSpeed() {
+        public override double GetBallMaxSpeed() {
             return ballMaxSpeed;
         }
 
-        public override double getBallWeight() {
+        public override double GetBallWeight() {
             return ballWeight;
         }
 
