@@ -22,13 +22,13 @@ internal class BallManager : LogicAbstractApi {
         if (Balls.Count == 0) {
             for (int i = 0; i < quantity; i++) {
                 double radius = Data.GetBallRadius();
-                double weight = Data.getBallWeight();
+                double weight = Data.GetBallWeight();
 
                 double x = (random.NextDouble() * (Table.Width - radius));
                 double y = (random.NextDouble() * (Table.Height - radius));
 
                 Vector2 speed = new Vector2(0, 0);
-                double maxSpeed = Data.getBallMaxSpeed();
+                double maxSpeed = Data.GetBallMaxSpeed();
 
                 while (speed.X == 0) {
                     speed.X = (float)((random.NextDouble() * 2 * maxSpeed) - maxSpeed);
@@ -113,8 +113,8 @@ internal class BallManager : LogicAbstractApi {
                         double m1 = Ball.Weight;
                         Vector2 v1 = Ball.Speed;
 
-                        double m2 = Ball.Weight;
-                        Vector2 v2 = Ball.Speed;
+                        double m2 = OtherBall.Weight;
+                        Vector2 v2 = OtherBall.Speed;
 
                         Vector2 u1 = Vector2.Multiply((Vector2.Multiply((float)(m1 - m2), v1) + Vector2.Multiply((float)(2 * m2), v2)), (float)(1 / (m1 + m2)));
                         Vector2 u2 = Vector2.Multiply((Vector2.Multiply((float)(2 * m1), v1) + Vector2.Multiply((float)(m2 - m1), v2)), (float)(1 / (m1 + m2)));
@@ -122,7 +122,6 @@ internal class BallManager : LogicAbstractApi {
                         OtherBall.Speed = u2;
                         Ball.Speed = u1;
                     }
-                    return;
                 }
             }
 
