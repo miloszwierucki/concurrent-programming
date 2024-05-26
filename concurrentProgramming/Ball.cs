@@ -5,60 +5,58 @@ using System.Numerics;
 
 namespace Data {
     public abstract class IBall {
-        public abstract int BallID { get; }
-        public abstract Vector2 Position { get; protected set; }
-        public abstract double Radius { get; set; }
-        public abstract double Weight { get; set; }
-        public abstract Vector2 Speed { get; set; }
         public abstract event EventHandler? ChangedPosition;
-
         public abstract void StopBall();
         public abstract void StartMoveBall();
-        public abstract void OnChangedPosition();
-
-        public static IBall CreateInstance(int id, Vector2 p, double r, Vector2 v, double w, bool isRunning = true) {
-            return new Ball(id, p, r, v, w, isRunning);
+        public abstract Vector2 Position { get; protected set; }
+        public abstract Vector2 Speed { get; set; }
+        public abstract double Radius { get; }
+        public abstract double Weight { get; }
+        public static IBall CreateInstance(Vector2 p, double r, Vector2 v, double m, bool isRunning) {
+            return new Ball(p, r, v, m, isRunning);
         }
     }
 
+
     internal class Ball : IBall {
-        public override int BallID { get; }
         public override Vector2 Position { get; protected set; }
-        public override double Radius { get; set; }
-        public override double Weight { get; set; }
+        public override double Radius { get; }
+        public override double Weight { get; }
 
         public override Vector2 Speed { get; set; }
         private bool isRunning;
         public override event EventHandler? ChangedPosition;
 
-        public Ball(int id, Vector2 p, double r, Vector2 v, double weight, bool isRunning) {
-            this.BallID = id;
+        public Ball(Vector2 p, double r, Vector2 v, double m, bool isRunning) {
             Position = p;
             Radius = r;
             Speed = v;
-            Weight = weight;
+            Weight = m;
 
             this.isRunning = isRunning;
             new Thread(new ThreadStart(Move)).Start();
         }
 
+        public void OnChangedPosition() {
+            ChangedPosition?.Invoke(this, new EventArgs());
+        }
+
         private async void Move() {
             Stopwatch timer = new Stopwatch();
+            float multiplier = 0;
 
             while (true) {
+                timer.Restart();
+
                 if (isRunning) {
-                    timer.Start();
-                    Position += Speed;
+                    Position += Speed * multiplier;
                     OnChangedPosition();
-                    timer.Stop();
                 }
 
-                await Task.Delay(TimeSpan.FromMilliseconds((float)Math.Sqrt(Speed.X * Speed.X + Speed.Y * Speed.Y) * (timer.ElapsedMilliseconds + 5) / 5));
+                await Task.Delay(5);
+                timer.Stop();
+                multiplier = ((float)timer.Elapsed.TotalMilliseconds) / 5;
             }
-
-        }
-        public override void OnChangedPosition() {
-            ChangedPosition?.Invoke(this, new EventArgs());
         }
 
         public override void StopBall() {
@@ -68,5 +66,6 @@ namespace Data {
         public override void StartMoveBall() {
             isRunning = true;
         }
+
     }
 }

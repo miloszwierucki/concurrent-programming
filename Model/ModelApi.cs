@@ -1,62 +1,43 @@
-﻿using Logic;
+﻿
+using Logic;
 using System.Collections.ObjectModel;
-using System.Numerics;
 
-namespace ModelApi {
-    public class OnPositionChangeUiAdapterEventArgs : EventArgs {
-        public readonly Vector2 position;
-        public readonly int id;
+namespace Model {
+    public abstract class ModelApi {
+        public abstract void CreateBalls();
+        public abstract void Start();
+        public abstract void Stop();
+        public abstract ObservableCollection<object> GetBalls();
+        public abstract int BallsCount { get; set; }
 
-        public OnPositionChangeUiAdapterEventArgs(Vector2 position, int id) {
-            this.position = position;
-            this.id = id;
+        public static ModelApi CreateInstance() {
+            return new Model();
         }
     }
 
-    public class Model {
-        public double tableWidth;
-        public double tableHeight;
-        public int ballsQuantity;
+    internal class Model : ModelApi {
+        private ObservableCollection<object> _balls = new ObservableCollection<object>();
+        private LogicAbstractApi LogicApi = LogicAbstractApi.CreateInstance();
+        private int _ballQuantity = 0;
+        public override int BallsCount { get => _ballQuantity; set => _ballQuantity = value; }
 
-        public LogicAbstractApi? logicLayer;
-        public event EventHandler<OnPositionChangeUiAdapterEventArgs>? BallPositionChange;
-
-
-        public Model() {
-            tableWidth = 600;
-            tableHeight = 500;
-            logicLayer = new BallsLogic(tableWidth, tableHeight);
-            ballsQuantity = 0;
-
-            logicLayer.PositionChangedEvent += (sender, b) => {
-                BallPositionChange?.Invoke(this, new OnPositionChangeUiAdapterEventArgs(b.GetPosition(), b.id));
-            };
+        public override void CreateBalls() {
+            LogicApi.AddBalls(_ballQuantity);
         }
 
-        public void SetBallCount(int quantity) {
-            ballsQuantity = quantity;
+        public override ObservableCollection<object> GetBalls() {
+            foreach (object ball in LogicApi.GetBalls()) {
+                _balls.Add(ball);
+            }
+            return _balls;
         }
 
-        public int GetBallsCount() {
-            return ballsQuantity;
+        public override void Start() {
+            LogicApi.Start();
         }
 
-        public void Start() {
-            logicLayer.AddBalls(ballsQuantity);
-            logicLayer.Start();
-        }
-
-        public void Stop() {
-            logicLayer.Stop();
-
-            logicLayer = new BallsLogic(tableWidth, tableHeight);
-            logicLayer.PositionChangedEvent += (sender, b) => {
-                BallPositionChange?.Invoke(this, new OnPositionChangeUiAdapterEventArgs(b.GetPosition(), b.id));
-            };
-        }
-
-        public void onBallPositionChange(OnPositionChangeUiAdapterEventArgs args) {
-            BallPositionChange?.Invoke(this, args);
+        public override void Stop() {
+            LogicApi.Stop();
         }
     }
 }

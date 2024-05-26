@@ -5,8 +5,7 @@ namespace ViewModelApi {
         private readonly Action execute;
         private bool isEnabled;
 
-        public Commands(Action execute)
-        {
+        public Commands(Action execute) {
             this.execute = execute;
             IsEnabled = true;
         }
@@ -27,20 +26,17 @@ namespace ViewModelApi {
             }
         }
 
-        public bool CanExecute(object parameter)
-        {
+        public bool CanExecute(object parameter) {
             return IsEnabled;
         }
 
         public event EventHandler CanExecuteChanged;
 
-        public virtual void Execute(object parameter)
-        {
+        public virtual void Execute(object parameter) {
             execute();
         }
 
-        internal void RaiseCanExecuteChanged()
-        {
+        internal void RaiseCanExecuteChanged() {
             this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }

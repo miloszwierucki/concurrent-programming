@@ -70,7 +70,7 @@
                     Background="#5C6B73" 
                     Width="100" FontFamily="Source Sans Pro" HorizontalAlignment="Center" Height="40" BorderBrush="{x:Null}" Foreground="#FFE0FBFC" />
 
-                <Button Content="Clear table" 
+                <Button Content="Stop" 
                     Command="{Binding StopButton}"
                     FontSize="20" 
 
@@ -79,19 +79,21 @@
                     Width="125" FontFamily="Source Sans Pro" HorizontalAlignment="Center" Height="40" BorderBrush="{x:Null}" Foreground="#FFE0FBFC"/>
             </Grid>
             <Grid>
-
                 <Canvas x:Name="BallCanvas" Height="500" Width="600">
                     <Border BorderBrush="#707070" BorderThickness="1" Height="500" Width="600"/>
-                    <ItemsControl ItemsSource="{Binding Path = Circles}">
+                    <ItemsControl ItemsSource="{Binding Balls}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Height="500" Width="600"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate >
-                                <Canvas>
-                                    <Ellipse Width="{Binding r}" Height="{Binding r}" Fill="#C2DFE3" Stroke="#000000" StrokeThickness="2">
-                                        <Ellipse.RenderTransform>
-                                            <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
-                                        </Ellipse.RenderTransform>
-                                    </Ellipse>
-                                </Canvas>
+                            <DataTemplate>
+                                <Ellipse Width="40" Height="40" Fill="#C2DFE3" Stroke="#000000" StrokeThickness="2">
+                                    <Ellipse.RenderTransform>
+                                        <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -100,3 +102,5 @@
         </StackPanel>
     </Viewbox>
 </Window>
+
+    

@@ -8,6 +8,7 @@ namespace Data {
             return new Table(w, h);
         }
     }
+
     internal class Table: ITable {
         public override double Width { get; }
         public override double Height { get; }
