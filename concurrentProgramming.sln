@@ -19,6 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "View\View.csproj", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementy rozwiązania", "Elementy rozwiązania", "{653E4CBB-B7BA-4E1B-B7B5-AB6966E60F72}"
 	ProjectSection(SolutionItems) = preProject
+		CodeMap.dgml = CodeMap.dgml
 		README.md = README.md
 	EndProjectSection
 EndProject
