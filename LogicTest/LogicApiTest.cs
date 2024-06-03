@@ -1,10 +1,13 @@
 using Moq;
 using Logic;
 using System.Numerics;
+using Data;
+using System.Collections.Concurrent;
 
 namespace Logic.Tests {
     [TestClass]
     public class LogicApiTest {
+        ConcurrentQueue<IBall> queue = new ConcurrentQueue<IBall>();
 
         [TestMethod]
         public void LogicRemoveBallTest() {
@@ -20,7 +23,7 @@ namespace Logic.Tests {
         public void BallManagerTest() {
             Mock<Data.IBall> ballMock = new Mock<Data.IBall>();
             ballMock.Setup(b => b.StopBall());
-            ballMock.Setup(b => b.StartMoveBall());
+            ballMock.Setup(b => b.StartMoveBall(queue));
             ballMock.Setup(b => b.Position).Returns(new Vector2(1, 1));
             ballMock.Setup(b => b.Speed).Returns(new Vector2(1, 1));
             ballMock.Setup(b => b.Radius).Returns(40);
@@ -46,13 +49,13 @@ namespace Logic.Tests {
             Assert.IsTrue(logicLayer.GetBalls().Count == 1);
 
             logicLayer.Start();
-            ballMock.Verify(b => b.StartMoveBall(), Times.Once);
+            ballMock.Verify(b => b.StartMoveBall(queue), Times.Once);
 
             logicLayer.Stop();
             ballMock.Verify(b => b.StopBall(), Times.Once);
 
             logicLayer.Start();
-            ballMock.Verify(b => b.StartMoveBall(), Times.Exactly(2));
+            ballMock.Verify(b => b.StartMoveBall(queue), Times.Exactly(2));
         }
     }
 }

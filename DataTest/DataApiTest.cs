@@ -11,10 +11,11 @@ namespace DataApiTest {
 
         [TestMethod]
         public void BallTest() { 
-            testBall1 = IBall.CreateInstance(new Vector2(1, 2), 1, new Vector2(0, 0), 40, false);
+            testBall1 = IBall.CreateInstance(0, new Vector2(1, 2), 1, new Vector2(0, 0), 40, false);
 
             Assert.IsNotNull(testBall1);
 
+            Assert.AreEqual(testBall1.BallID, 0);
             Assert.AreEqual(testBall1.Position, new Vector2(1, 2));
             Assert.AreEqual(testBall1.Radius, 1);
             Assert.AreEqual(testBall1.Speed, new Vector2(0, 0));

@@ -1,10 +1,12 @@
 ﻿using Data;
+using System.Collections.Concurrent;
 using System.Numerics;
 namespace Logic;
 
 internal class BallManager : LogicAbstractApi {
     private DataAbstractApi Data;
     private List<IBall> Balls;
+    private readonly ConcurrentQueue<IBall> queue;
     private ITable Table;
 
     private bool isRunning = false;
@@ -14,6 +16,8 @@ internal class BallManager : LogicAbstractApi {
         this.Balls = Balls;
         this.Data = Data;
         this.Table = Table;
+
+        queue = new ConcurrentQueue<IBall>();
     }
 
     public override void AddBalls(int quantity) {
@@ -38,7 +42,7 @@ internal class BallManager : LogicAbstractApi {
                     speed.Y = (float)((random.NextDouble() * 2 * maxSpeed) - maxSpeed);
                 }
 
-                IBall ball = IBall.CreateInstance(new Vector2((float)x, (float)y), radius, speed, weight, false);
+                IBall ball = IBall.CreateInstance(i, new Vector2((float)x, (float)y), radius, speed, weight, false);
 
                 Balls.Add(ball);
                 ball.ChangedPosition += CheckCollisions;
@@ -57,11 +61,14 @@ internal class BallManager : LogicAbstractApi {
     }
 
     public override void Start() {
+
         if (!isRunning) {
             foreach (IBall ball in Balls) {
-                ball.StartMoveBall();
+                ball.StartMoveBall(queue);
             }
             isRunning = true;
+
+            Data.CreateLoggingTask(queue);
         }
     }
 
