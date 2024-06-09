@@ -88,7 +88,7 @@ internal class BallManager : LogicAbstractApi {
     }
 
     public override int GetBallsCount() {
-        return Balls.Count;
+        return Balls.Count();
     }
 
     private void CheckCollisions(object? sender, EventArgs e) {

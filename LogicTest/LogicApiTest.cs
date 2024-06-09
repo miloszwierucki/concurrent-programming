@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 namespace Logic.Tests {
     [TestClass]
     public class LogicApiTest {
-        ConcurrentQueue<IBall> queue = new ConcurrentQueue<IBall>();
+        BlockingCollection<IBallLogData> queue = new BlockingCollection<IBallLogData>(15);
 
         [TestMethod]
         public void LogicRemoveBallTest() {
@@ -15,7 +15,7 @@ namespace Logic.Tests {
             logicLayer.AddBalls(5);
             Assert.AreEqual(logicLayer.GetBallsCount(), 5);
 
-            logicLayer.RemoveBalls(2);
+            logicLayer.RemoveBalls(3);
             Assert.AreEqual(logicLayer.GetBallsCount(), 3);
         }
 
