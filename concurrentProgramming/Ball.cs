@@ -8,7 +8,7 @@ namespace Data {
     public abstract class IBall {
         public abstract event EventHandler? ChangedPosition;
         public abstract void StopBall();
-        public abstract void StartMoveBall(ConcurrentQueue<IBall> queue);
+        public abstract void StartMoveBall(BlockingCollection<IBallLogData> queue);
         public abstract int BallID { get; }
         public abstract Vector2 Position { get; protected set; }
         public abstract Vector2 Speed { get; set; }
@@ -47,7 +47,7 @@ namespace Data {
             ChangedPosition?.Invoke(this, new EventArgs());
         }
 
-        private async void Move(ConcurrentQueue<IBall> queue) {
+        private async void Move(BlockingCollection<IBallLogData> queue) {
             Stopwatch timer = new Stopwatch();
             float multiplier = 0;
             double startTime = 0;
@@ -76,7 +76,7 @@ namespace Data {
             isRunning = false;
         }
 
-        public override void StartMoveBall(ConcurrentQueue<IBall> queue) {
+        public override void StartMoveBall(BlockingCollection<IBallLogData> queue) {
             isRunning = true;
 
             if (createThread == false){
@@ -87,9 +87,9 @@ namespace Data {
             }
         }
 
-        private void saveBall(ConcurrentQueue<IBall> queue) {
+        private void saveBall(BlockingCollection<IBallLogData> queue) {
             // Umieszcza w kolejce nowy obiekt Ball z zapisanym bieżącym stanem
-            queue.Enqueue(new Ball(BallID, Position, Radius, Speed, Weight, isRunning));
+            queue.TryAdd(new BallLogData(BallID, Position, Speed));
         }
     }
 }

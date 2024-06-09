@@ -9,7 +9,7 @@ namespace Data {
         public abstract double GetBallRadius();
         public abstract double GetBallMaxSpeed();
         public abstract double GetBallWeight();
-        public abstract Task CreateLoggingTask(ConcurrentQueue<IBall> logQueue);
+        public abstract void CreateLoggingTask(BlockingCollection<IBallLogData> logQueue);
 
         public static IBall CreateNewBall(int id, Vector2 p, double r, Vector2 s, double w) {
             return new Ball(id, p, r, s, w, true);
@@ -30,12 +30,14 @@ namespace Data {
         private readonly double ballRadius = 40;
         private readonly double ballMaxSpeed = 2;
         private readonly double ballWeight = 10;
-        private readonly string logPath = @"C:\Users\Mily\Desktop\Log.yaml";
-        private readonly Stopwatch stopWatch;
+        //private readonly string logPath = @"C:\Users\Mily\Desktop\Log.yaml";
+        //private readonly string logPath = @$"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName}/Log.yaml";
+        private readonly string logPath = @$"{Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile)}/Desktop/Log.yaml";
         private bool newSession;
+        private bool createThread = false;
+
 
         public Data() {
-            stopWatch = new Stopwatch();
             newSession = true;
         }
 
@@ -60,8 +62,12 @@ namespace Data {
         }
 
         // Tworzy zadanie logowania z określoną kolejką piłek z zapisanym stanem
-        public override Task CreateLoggingTask(ConcurrentQueue<IBall> logQueue) {
-            return CallLogger(logQueue);
+        public override void CreateLoggingTask(BlockingCollection<IBallLogData> logQueue) {
+            if (createThread == false) {
+                Thread thread = new Thread(() => CallLogger(logQueue));
+                thread.Start();
+                createThread = true;
+            }
         }
 
         // Usuwa istniejący plik dziennika, jeśli istnieje i rozpoczyna nową sesję
@@ -73,40 +79,22 @@ namespace Data {
         }
 
         // Wywołuje zadanie logowania asynchronicznie
-        internal async Task CallLogger(ConcurrentQueue<IBall> logQueue) {
+        internal async void CallLogger(BlockingCollection<IBallLogData> logQueue) {
             FileMaker(logPath);
             string diagnosticData;
-            string timestamp;
             string log;
-            ManualResetEvent queueNotEmpty = new ManualResetEvent(false);
 
-            while (true) {
-                stopWatch.Reset();
-                stopWatch.Start();
-                IBall logObject;
-
-                if (!logQueue.IsEmpty) {
-                    while (!logQueue.TryDequeue(out logObject)) {
-                        queueNotEmpty.Reset();
-                        queueNotEmpty.WaitOne();
-                    }
-
+            try {
+                foreach (var logObject in logQueue.GetConsumingEnumerable()) {
                     // Zapis do pliku w formacie YAML
-                    timestamp = DateTime.Now.ToString("MM/DD/YYYY HH:MM:SS.FFF");
                     diagnosticData = $"    BallID: {logObject.BallID}\n    BallPosition:\n      X: {logObject.Position.X}\n      Y: {logObject.Position.Y}\n    BallSpeed:\n      X: {logObject.Speed.X}\n      Y: {logObject.Speed.Y}";
-                    log = String.Format("- Date: {0}\n  Info:\n{1}\n", timestamp, diagnosticData);
+                    log = String.Format("- Date: {0}\n  Info:\n{1}\n", logObject.Timestamp, diagnosticData);
 
-                    lock (this) {
-                        File.AppendAllText(logPath, log);
-                    }
-
-                    stopWatch.Stop();
-                    await Task.Delay((int)(stopWatch.ElapsedMilliseconds));
-                } else {
-                    queueNotEmpty.Set(); // Ustawienie zdarzenie, które umożliwić kontynuację oczekujących wątków
-                    await Task.Delay(100); // Opóźnienie przed ponownym sprawdzeniem kolejki logQueue
+                    File.AppendAllText(logPath, log);
                 }
-            }
+            } catch (Exception e) {
+
+            }     
         }
 
     }

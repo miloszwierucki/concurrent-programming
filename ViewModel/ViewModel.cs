@@ -30,23 +30,30 @@ namespace ViewModelApi {
 
         public ViewModel() {
             AddBallButton = new Commands(() => {
-                if (BallsCount < 10) BallsCount += 1;
+                if (BallsCount < 10) {
+                    BallsCount += 1;
+                    ModelApi.CreateBalls();
+                };
             });
 
             RemoveBallButton = new Commands(() => {
-                if (BallsCount > 0) BallsCount -= 1;
+                if (BallsCount > 0) {
+                    BallsCount -= 1;
+                    ModelApi.RemoveBalls();
+                };
             });
 
             StartButton = new Commands(() => {
+                Balls = ModelApi.GetBalls();
+
                 if (Balls != null) {
                     ModelApi.Start();
                 }
-                ModelApi.CreateBalls();
-                Balls = ModelApi.GetBalls();
             });
 
             StopButton = new Commands(() => {
                 ModelApi.Stop();
+                Balls.Clear();
             });
         }
     }

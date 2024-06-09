@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 namespace Model {
     public abstract class ModelApi {
         public abstract void CreateBalls();
+        public abstract void RemoveBalls();
         public abstract void Start();
         public abstract void Stop();
         public abstract ObservableCollection<object> GetBalls();
@@ -23,6 +24,10 @@ namespace Model {
 
         public override void CreateBalls() {
             LogicApi.AddBalls(_ballQuantity);
+        }
+
+        public override void RemoveBalls() {
+            LogicApi.RemoveBalls(_ballQuantity);
         }
 
         public override ObservableCollection<object> GetBalls() {

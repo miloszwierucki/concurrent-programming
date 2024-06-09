@@ -6,7 +6,7 @@ namespace Logic;
 internal class BallManager : LogicAbstractApi {
     private DataAbstractApi Data;
     private List<IBall> Balls;
-    private readonly ConcurrentQueue<IBall> queue;
+    private readonly BlockingCollection<IBallLogData> queue;
     private ITable Table;
 
     private bool isRunning = false;
@@ -17,51 +17,49 @@ internal class BallManager : LogicAbstractApi {
         this.Data = Data;
         this.Table = Table;
 
-        queue = new ConcurrentQueue<IBall>();
+        queue = new BlockingCollection<IBallLogData>(15);
     }
 
     public override void AddBalls(int quantity) {
         Random random = new Random();
+        int count = Balls.Count();
 
-        if (Balls.Count == 0) {
-            for (int i = 0; i < quantity; i++) {
-                double radius = Data.GetBallRadius();
-                double weight = Data.GetBallWeight();
+        for (int i = count; i < quantity; i++) {
+            double radius = Data.GetBallRadius();
+            double weight = Data.GetBallWeight();
 
-                double x = (random.NextDouble() * (Table.Width - radius));
-                double y = (random.NextDouble() * (Table.Height - radius));
+            double x = (random.NextDouble() * (Table.Width - radius));
+            double y = (random.NextDouble() * (Table.Height - radius));
 
-                Vector2 speed = new Vector2(0, 0);
-                double maxSpeed = Data.GetBallMaxSpeed();
+            Vector2 speed = new Vector2(0, 0);
+            double maxSpeed = Data.GetBallMaxSpeed();
 
-                while (speed.X == 0) {
-                    speed.X = (float)((random.NextDouble() * 2 * maxSpeed) - maxSpeed);
-                }
-
-                while (speed.Y == 0) {
-                    speed.Y = (float)((random.NextDouble() * 2 * maxSpeed) - maxSpeed);
-                }
-
-                IBall ball = IBall.CreateInstance(i, new Vector2((float)x, (float)y), radius, speed, weight, false);
-
-                Balls.Add(ball);
-                ball.ChangedPosition += CheckCollisions;
+            while (speed.X == 0) {
+                speed.X = (float)((random.NextDouble() * 2 * maxSpeed) - maxSpeed);
             }
+
+            while (speed.Y == 0) {
+                speed.Y = (float)((random.NextDouble() * 2 * maxSpeed) - maxSpeed);
+            }
+
+            IBall ball = IBall.CreateInstance(i, new Vector2((float)x, (float)y), radius, speed, weight, false);
+
+            Balls.Add(ball);
+            ball.ChangedPosition += CheckCollisions;
         }
     }
 
     public override void RemoveBalls(int quantity) {
         int count = Balls.Count();
 
-        for (int i = 0; i < quantity; i++) {
+        for (int i = 0; i < count - quantity; i++) {
             if (count > 0) {
-                Balls.RemoveAt(i);
+                Balls.RemoveAt(count - i - 1);
             };
         }
     }
 
     public override void Start() {
-
         if (!isRunning) {
             foreach (IBall ball in Balls) {
                 ball.StartMoveBall(queue);
